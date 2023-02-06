@@ -37,7 +37,21 @@ const createProduct=async(req,res,next)=>{
 
 
 const getProducts=async(req,res,next)=>{
+    const client = new Mongoclient(url);
+    let products;
+    try{
+        await client.connect();
+        const db=client.db();
 
+         products=await db.collection('products4').find().toArray()
+
+
+    }catch(error){
+        console.log('somethign went wrong')
+        return res.json({message:'code theek krle bhai'})
+    }
+    client.close()
+    res.json(products)
 }
 
 exports.createProduct=createProduct;
